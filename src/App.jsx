@@ -53,15 +53,17 @@ export const App = () => {
 
 	return (
 		<div>
+			<h1>Список задач</h1>
+			<div>
+				<input></input>
+			</div>
+
 			{isLoading ? (
 				<div className={styles.loader}></div>
 			) : (
-				<>
-					<h1>Список задач</h1>
-					<div>
-						<Table table={table} todos={todos} />
-					</div>
-				</>
+				<div>
+					<Table table={table} todos={todos} />
+				</div>
 			)}
 		</div>
 	);
