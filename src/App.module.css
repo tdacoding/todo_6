@@ -7,12 +7,17 @@ body {
 	align-items: center;
 }
 
+.app {
+	width: 600px;
+}
+
 h1 {
 	color: #333;
+	text-align: center;
 }
 
 table {
-	width: 80%;
+	width: 600px;
 	max-width: 600px;
 	border-collapse: collapse;
 	background: white;
@@ -42,46 +47,45 @@ td {
 }
 
 .delBtn {
-  background-color: rgb(224, 93, 93);
-  border-style: none;
-  border-radius: 5px;
+	background-color: rgb(224, 93, 93);
+	border-style: none;
+	border-radius: 5px;
 }
 
 .delBtn:hover {
-  background-color: rgb(175, 52, 52);
+	background-color: rgb(175, 52, 52);
 }
 
 .editBtn {
-  background-color: rgb(118, 161, 53);
-  border-style: none;
-  border-radius: 5px;
+	background-color: rgb(118, 161, 53);
+	border-style: none;
+	border-radius: 5px;
 }
 
 .editBtn:hover {
-  background-color: rgb(92, 139, 21);
+	background-color: rgb(92, 139, 21);
 }
 
 .loader {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 25px;
-  height: 25px;
-  border: 5px solid gray;
-  border-radius: 50%;
-  border-left-color: transparent;
-  border-bottom-color: transparent;
-  animation: loader 1s infinite;
-  animation-timing-function: linear;
-  
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 25px;
+	height: 25px;
+	border: 5px solid gray;
+	border-radius: 50%;
+	border-left-color: transparent;
+	border-bottom-color: transparent;
+	animation: loader 1s infinite;
+	animation-timing-function: linear;
 }
 
 @keyframes loader {
-  0% {
-      transform: rotate(0deg);
-  }
-  100% {
-      transform: rotate(360deg);
-  }
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
 }

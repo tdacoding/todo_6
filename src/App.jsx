@@ -1,15 +1,17 @@
 import styles from './App.module.css';
 import Table from './components/Table';
+import { Form } from './components/Form';
 import { useEffect, useState } from 'react';
 
 export const App = () => {
 	const [todos, setTodos] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isCreating, setIsCreating] = useState(false);
 
-	const update = (todoId) => {
+	const update = () => {
 		// console.log('upd', todoId);
 	};
-	const remove = (todoId) => {
+	const remove = () => {
 		// console.log('del', todoId);
 	};
 
@@ -20,9 +22,9 @@ export const App = () => {
 
 		edit: {
 			name: 'Действие',
-			component: (todoId) => {
+			component: () => {
 				return (
-					<button onClick={() => update(todoId)} className={styles.editBtn}>
+					<button onClick={() => update()} className={styles.editBtn}>
 						Изменить
 					</button>
 				);
@@ -30,9 +32,9 @@ export const App = () => {
 		},
 		delete: {
 			name: 'Действие',
-			component: (todoId) => {
+			component: () => {
 				return (
-					<button onClick={() => remove(todoId)} className={styles.delBtn}>
+					<button onClick={() => remove()} className={styles.delBtn}>
 						Удалить
 					</button>
 				);
@@ -42,29 +44,49 @@ export const App = () => {
 
 	useEffect(() => {
 		setIsLoading(true);
-
-		fetch('https://jsonplaceholder.typicode.com/todos')
-			.then((loadedData) => loadedData.json())
-			.then((loadedTodos) => {
-				setTodos(loadedTodos);
+		fetch('http://localhost:3000/todos')
+			.then((response) => response.json())
+			.then((data) => {
+				setTodos(data);
 			})
 			.finally(() => setIsLoading(false));
 	}, []);
 
-	return (
-		<div>
-			<h1>Список задач</h1>
-			<div>
-				<input></input>
-			</div>
+	const requestAddTodo = (newTodo) => {
+		setIsCreating(true);
 
-			{isLoading ? (
+		fetch('http://localhost:3000/todos', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json;charset=utf-8' },
+			body: JSON.stringify({
+				title: newTodo,
+			}),
+		})
+			.then((response) => response.json())
+			.then((todo) => {
+				console.log('Задача добавлена, ответ сервера:', todo);
+
+				setTodos((todos) => {
+					[...todos, todo];
+				});
+			})
+			.finally(() => setIsCreating(false));
+	};
+
+	return (
+		<div className={styles.app}>
+			<h1>Список задач</h1>
+			<Form requestAddTodo={requestAddTodo} isCreating={isCreating} />
+			{todos.map(({ id, title }) => (
+				<div key={id}>{title}</div>
+			))}
+			{/* {isLoading ? (
 				<div className={styles.loader}></div>
 			) : (
 				<div>
 					<Table table={table} todos={todos} />
 				</div>
-			)}
+			)} */}
 		</div>
 	);
 };
