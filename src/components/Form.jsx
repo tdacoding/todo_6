@@ -3,10 +3,11 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { fieldsSchema } from '../data/validationConfig';
 
-export const Form = ({ requestAddTodo, isCreating }) => {
+export const Form = ({ request, isCreating, isEditing, formInputRef }) => {
 	const {
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors, isValid },
 	} = useForm({
 		defaultValues: {
@@ -15,10 +16,11 @@ export const Form = ({ requestAddTodo, isCreating }) => {
 		resolver: yupResolver(fieldsSchema),
 		mode: 'onChange',
 	});
+	const { ref, ...rest } = register('title');
 
 	const sendFormData = (newTodo) => {
-		console.log(newTodo);
-		requestAddTodo(newTodo.title);
+		request(newTodo);
+		reset();
 	};
 
 	const error = errors.title?.message;
@@ -31,7 +33,11 @@ export const Form = ({ requestAddTodo, isCreating }) => {
 				type="text"
 				placeholder="Новая задача"
 				autoComplete="off"
-				{...register('title')}
+				{...rest}
+				ref={(e) => {
+					ref(e);
+					formInputRef.current = e; // you can still assign to ref
+				}}
 			/>
 			{error && <div className={styles.error}>{error}</div>}
 
@@ -40,7 +46,7 @@ export const Form = ({ requestAddTodo, isCreating }) => {
 				type="submit"
 				disabled={!isValid || isCreating}
 			>
-				Добавить задачу
+				{isEditing ? 'Сохранить изменения' : 'Добавить задачу'}
 			</button>
 		</form>
 	);

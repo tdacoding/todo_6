@@ -1,6 +1,6 @@
 .form {
 	font-family: Arial, sans-serif;
-	padding: 5px;
+	padding: 8px;
 	margin: 0px;
 	margin-top: 20px;
 	margin-bottom: 20px;
@@ -14,17 +14,18 @@
 .input {
 	font-family: Arial, sans-serif;
 	margin: 0px;
-	padding: 12px;
+	padding: 2px;
 	margin-top: 5px;
 	margin-bottom: 5px;
 	color: #5d685c;
 	width: 95%;
-	height: 20 px;
+	height: 10 px;
 	border: 1px solid #007bff;
 	border-radius: 5px;
 }
+
 .button {
-	margin: 0px;
+	margin: 5px;
 	margin-top: 5px;
 	margin-bottom: 0px;
 	padding: 6px;
@@ -32,17 +33,25 @@
 	border: 1px solid rgb(118, 161, 53);
 	border-radius: 10px;
 	background-color: rgb(166, 206, 106);
+
 	color: #5d685c;
 }
 .button:hover {
 	background-color: rgb(150, 184, 99);
 }
-.button:disabled {
-	background-color: #dfdfca62;
+
+.pressedButton {
+	margin: 5px;
+	margin-top: 5px;
+	margin-bottom: 0px;
+	padding: 6px;
+	width: 15%px;
+	border: 2px solid rgb(118, 161, 53);
+	border-radius: 10px;
+	background-color: rgb(116, 175, 27);
+
+	color: #5d685c;
 }
-.error {
-	margin: 0px;
-	margin-bottom: 8px;
-	font-size: 12px;
-	color: red;
+.pressedButton:hover {
+	background-color: rgb(166, 206, 106);
 }

@@ -3,7 +3,7 @@ const TableBody = ({ todos, table }) => {
 		if (table[column].component) {
 			const component = table[column].component;
 			if (typeof component === 'function') {
-				return component(todo.id);
+				return component(todo);
 			}
 		} else {
 			return todo[column];
