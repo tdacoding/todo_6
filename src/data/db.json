@@ -1,28 +1,16 @@
 {
-  "todos": [
-    {
-      "title": "qeq",
-      "id": 3
-    },
-    {
-      "title": "scq c",
-      "id": 4
-    },
-    {
-      "title": "ss dsd",
-      "id": 5
-    },
-    {
-      "title": "ss",
-      "id": 6
-    },
-    {
-      "title": "de",
-      "id": 7
-    },
-    {
-      "title": "s",
-      "id": 8
-    }
-  ]
+	"todos": [
+		{
+			"title": "qeq",
+			"id": 3
+		},
+		{
+			"title": "scq c",
+			"id": 4
+		},
+		{
+			"title": "ss dsd",
+			"id": 5
+		}
+	]
 }

@@ -19,7 +19,7 @@ export const Form = ({ request, isCreating, isEditing, formInputRef }) => {
 	const { ref, ...rest } = register('title');
 
 	const sendFormData = (newTodo) => {
-		request(newTodo);
+		request(newTodo.title);
 		reset();
 	};
 
