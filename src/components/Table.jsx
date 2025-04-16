@@ -1,5 +1,6 @@
 import TableBody from './TableBody';
 import TableHeader from './TableHeader';
+import PropTypes from 'prop-types';
 
 const Table = ({ table, todos, setEditedTodo }) => {
 	return (
@@ -11,3 +12,9 @@ const Table = ({ table, todos, setEditedTodo }) => {
 };
 
 export default Table;
+
+Table.propTypes = {
+	table: PropTypes.object,
+	todos: PropTypes.array,
+	setEditedTodo: PropTypes.func,
+};

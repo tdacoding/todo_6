@@ -1,8 +1,6 @@
 import styles from './Form.module.css';
 import { useEffect, useState } from 'react';
-// import { useForm } from 'react-hook-form';
-// import { yupResolver } from '@hookform/resolvers/yup';
-// import { fieldsSchema } from '../data/validationConfig';
+import PropTypes from 'prop-types';
 
 export const Form = ({
 	request,
@@ -63,4 +61,13 @@ export const Form = ({
 			</button>
 		</form>
 	);
+};
+
+Form.propTypes = {
+	request: PropTypes.func,
+	isLoading: PropTypes.bool,
+	isEditing: PropTypes.bool,
+	editedTodo: PropTypes.object,
+	setIsEditing: PropTypes.func,
+	formInputRef: PropTypes.object,
 };

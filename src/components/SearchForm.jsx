@@ -1,5 +1,6 @@
 import styles from './SearchForm.module.css';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 export const SearchForm = ({ isLoading, isSorted, setIsSorted, setSearchExpression }) => {
 	const [searchField, setSearchField] = useState('');
@@ -45,4 +46,11 @@ export const SearchForm = ({ isLoading, isSorted, setIsSorted, setSearchExpressi
 			</button>
 		</form>
 	);
+};
+
+SearchForm.propTypes = {
+	isLoading: PropTypes.bool,
+	isSorted: PropTypes.bool,
+	setSearchExpression: PropTypes.func,
+	setIsSorted: PropTypes.func,
 };

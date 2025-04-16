@@ -2,7 +2,7 @@ import styles from './App.module.css';
 import Table from './components/Table';
 import { Form } from './components/Form';
 import { SearchForm } from './components/SearchForm';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 
 export const App = () => {
 	const [todos, setTodos] = useState([]);
@@ -41,7 +41,7 @@ export const App = () => {
 		},
 	};
 
-	const loadData = async () => {
+	const loadData = useCallback(async () => {
 		setIsLoading(true);
 		try {
 			const response = await fetch(
@@ -54,7 +54,7 @@ export const App = () => {
 			setError(error.message);
 			setIsLoading(false);
 		}
-	};
+	}, [isSorted, searchExpression]);
 
 	const newTodo = async (title) => {
 		setIsLoading(true);
@@ -143,7 +143,7 @@ export const App = () => {
 
 	useEffect(() => {
 		loadData();
-	}, [isSorted, searchExpression]);
+	}, [loadData]);
 
 	return (
 		<div className={styles.app}>

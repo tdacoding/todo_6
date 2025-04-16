@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const TableBody = ({ todos, table }) => {
 	const renderContent = (todo, column) => {
 		if (table[column].component) {
@@ -25,3 +27,8 @@ const TableBody = ({ todos, table }) => {
 };
 
 export default TableBody;
+
+TableBody.propTypes = {
+	table: PropTypes.object,
+	todos: PropTypes.array,
+};

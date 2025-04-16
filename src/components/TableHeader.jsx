@@ -1,4 +1,4 @@
-import style from '../App.module.css';
+import PropTypes from 'prop-types';
 
 const TableHeader = (props) => {
 	const { table } = props;
@@ -19,3 +19,7 @@ const TableHeader = (props) => {
 };
 
 export default TableHeader;
+
+TableHeader.propTypes = {
+	table: PropTypes.object,
+};
