@@ -8,11 +8,11 @@ export const App = () => {
 	const [todos, setTodos] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);
-	const [isCreating, setIsCreating] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
 	const [editedTodo, setEditedTodo] = useState(null);
 	const formInputRef = useRef(null);
-	const [reset, setReset] = useState(false);
+	const [isSorted, setIsSorted] = useState(false);
+	const [searchExpression, setSearchExpression] = useState('');
 
 	const table = {
 		title: {
@@ -41,15 +41,20 @@ export const App = () => {
 		},
 	};
 
-	useEffect(() => {
+	const loadData = async () => {
 		setIsLoading(true);
-		fetch('http://localhost:3000/todos')
-			.then((response) => response.json())
-			.then((data) => {
-				setTodos(data);
-			})
-			.finally(() => setIsLoading(false));
-	}, [reset]);
+		try {
+			const response = await fetch(
+				`http://localhost:3000/todos?q=${searchExpression}${isSorted ? '&_sort=title&_order=asc' : ''}`,
+			);
+			const data = await response.json();
+			setTodos(data);
+			setIsLoading(false);
+		} catch (error) {
+			setError(error.message);
+			setIsLoading(false);
+		}
+	};
 
 	const newTodo = async (title) => {
 		setIsLoading(true);
@@ -62,7 +67,8 @@ export const App = () => {
 				}),
 			});
 			const newTodo = await response.json();
-			setTodos((prevTodos) => [...prevTodos, newTodo.title]);
+
+			setTodos((prevTodos) => [...prevTodos, newTodo]);
 			setIsLoading(false);
 		} catch (error) {
 			setError(error.message);
@@ -71,9 +77,11 @@ export const App = () => {
 	};
 
 	const delTodo = async (id) => {
+		setEditedTodo(null);
+		setIsEditing(false);
 		setIsLoading(true);
 		try {
-			fetch(`http://localhost:3000/todos/${id}`, {
+			await fetch(`http://localhost:3000/todos/${id}`, {
 				method: 'DELETE',
 			});
 			setTodos(todos.filter((todo) => todo.id !== id));
@@ -84,14 +92,14 @@ export const App = () => {
 		}
 	};
 
-	const editTodo = async (todo) => {
+	const editTodo = async (newTitle) => {
 		setIsLoading(true);
 		try {
-			const response = await fetch('http://localhost:3000/todos/' + editedTodo.id, {
+			const response = await fetch(`http://localhost:3000/todos/${editedTodo.id}`, {
 				method: 'PUT',
 				headers: { 'Content-Type': 'application/json;charset=utf-8' },
 				body: JSON.stringify({
-					title: todo.title,
+					title: newTitle,
 				}),
 			});
 			const updatedTodo = await response.json();
@@ -112,49 +120,57 @@ export const App = () => {
 	const editRegime = (todo) => {
 		setIsEditing(true);
 		setEditedTodo(todo);
-		formInputRef.current.value = todo.title;
 		formInputRef.current.focus();
 	};
 
 	const formProps = isEditing
 		? {
 				request: editTodo,
-				isCreating,
+				isLoading,
 				isEditing,
+				setIsEditing,
 				editedTodo,
 				formInputRef,
 			}
 		: {
 				request: newTodo,
-				isCreating,
+				isLoading,
 				isEditing,
+				setIsEditing,
 				editedTodo,
 				formInputRef,
 			};
+
+	useEffect(() => {
+		loadData();
+	}, [isSorted, searchExpression]);
 
 	return (
 		<div className={styles.app}>
 			<h1>Список задач</h1>
 			<Form {...formProps} />
 			<SearchForm
-				todos={todos}
-				setTodos={setTodos}
-				reset={reset}
-				setReset={setReset}
+				isSorted={isSorted}
+				setIsSorted={setIsSorted}
+				isLoading={isLoading}
+				setSearchExpression={setSearchExpression}
 			/>
 
 			{isLoading ? (
 				<div className={styles.loader}></div>
 			) : (
-				<div>
-					{Object.keys(todos).length > 0 && (
-						<Table
-							table={table}
-							todos={todos}
-							setEditedTodo={setEditedTodo}
-						/>
-					)}
-				</div>
+				<>
+					<div>
+						{Object.keys(todos).length > 0 && (
+							<Table
+								table={table}
+								todos={todos}
+								setEditedTodo={setEditedTodo}
+							/>
+						)}
+					</div>
+					<div className={styles.error}>{error}</div>
+				</>
 			)}
 		</div>
 	);

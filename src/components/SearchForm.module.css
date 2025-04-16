@@ -40,6 +40,10 @@
 	background-color: rgb(150, 184, 99);
 }
 
+.button:disabled {
+	background-color: #dfdfca62;
+}
+
 .pressedButton {
 	margin: 5px;
 	margin-top: 5px;

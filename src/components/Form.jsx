@@ -1,52 +1,65 @@
 import styles from './Form.module.css';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { fieldsSchema } from '../data/validationConfig';
+import { useEffect, useState } from 'react';
+// import { useForm } from 'react-hook-form';
+// import { yupResolver } from '@hookform/resolvers/yup';
+// import { fieldsSchema } from '../data/validationConfig';
 
-export const Form = ({ request, isCreating, isEditing, formInputRef }) => {
-	const {
-		register,
-		handleSubmit,
-		reset,
-		formState: { errors, isValid },
-	} = useForm({
-		defaultValues: {
-			title: '',
-		},
-		resolver: yupResolver(fieldsSchema),
-		mode: 'onChange',
-	});
-	const { ref, ...rest } = register('title');
+export const Form = ({
+	request,
+	isLoading,
+	isEditing,
+	editedTodo,
+	setIsEditing,
+	formInputRef,
+}) => {
+	const [titleField, setTitleField] = useState('');
 
-	const sendFormData = (newTodo) => {
-		request(newTodo.title);
-		reset();
+	useEffect(() => {
+		if (isEditing) {
+			setTitleField(editedTodo.title);
+		} else {
+			setTitleField('');
+		}
+	}, [isEditing, editedTodo]);
+
+	const sendData = (event) => {
+		event.preventDefault();
+		request(titleField);
+		setTitleField('');
 	};
 
-	const error = errors.title?.message;
+	const cancel = (event) => {
+		event.preventDefault();
+		setTitleField('');
+		setIsEditing(false);
+	};
 
 	return (
-		<form className={styles.form} onSubmit={handleSubmit(sendFormData)}>
+		<form className={styles.form}>
 			<input
 				className={styles.input}
 				name="title"
 				type="text"
 				placeholder="Новая задача"
 				autoComplete="off"
-				{...rest}
-				ref={(e) => {
-					ref(e);
-					formInputRef.current = e; // you can still assign to ref
-				}}
+				ref={formInputRef}
+				value={titleField}
+				onChange={(event) => setTitleField(event.target.value)}
 			/>
-			{error && <div className={styles.error}>{error}</div>}
 
 			<button
 				className={styles.button}
-				type="submit"
-				disabled={!isValid || isCreating}
+				onClick={sendData}
+				disabled={titleField.length == 0 || isLoading}
 			>
 				{isEditing ? 'Сохранить изменения' : 'Добавить задачу'}
+			</button>
+			<button
+				className={styles.button}
+				onClick={cancel}
+				disabled={!isEditing ? titleField.length == 0 || isLoading : ''}
+			>
+				Отмена
 			</button>
 		</form>
 	);

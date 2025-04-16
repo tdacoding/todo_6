@@ -89,3 +89,9 @@ td {
 		transform: rotate(360deg);
 	}
 }
+
+.error {
+	margin-top: 10px;
+	color: red;
+	text-align: center;
+}

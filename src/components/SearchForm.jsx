@@ -1,26 +1,22 @@
 import styles from './SearchForm.module.css';
 import { useState } from 'react';
 
-export const SearchForm = ({ todos, setTodos, reset, setReset }) => {
+export const SearchForm = ({ isLoading, isSorted, setIsSorted, setSearchExpression }) => {
 	const [searchField, setSearchField] = useState('');
-	const [isPressed, setIsPressed] = useState(false);
 
 	const handleSearch = (event) => {
 		event.preventDefault();
-		setTodos(todos.filter((todo) => todo.title.includes(searchField)));
+		setSearchExpression(searchField);
 	};
 	const handleReset = (event) => {
 		event.preventDefault();
 		setSearchField('');
-		setReset(!reset);
-		setIsPressed(false);
+		setSearchExpression('');
+		setIsSorted(false);
 	};
 	const handleSort = (event) => {
 		event.preventDefault();
-		setIsPressed(!isPressed);
-		isPressed
-			? setTodos([...todos].sort((a, b) => a.id - b.id))
-			: setTodos([...todos].sort((a, b) => a.title.localeCompare(b.title)));
+		setIsSorted(!isSorted);
 	};
 
 	return (
@@ -34,15 +30,16 @@ export const SearchForm = ({ todos, setTodos, reset, setReset }) => {
 				placeholder="Поиск"
 				autoComplete="off"
 			/>
-			<button className={styles.button} onClick={handleSearch}>
+			<button className={styles.button} onClick={handleSearch} disabled={isLoading}>
 				Отфильтровать
 			</button>
-			<button className={styles.button} onClick={handleReset}>
+			<button className={styles.button} onClick={handleReset} disabled={isLoading}>
 				Сброс
 			</button>
 			<button
-				className={isPressed ? styles.pressedButton : styles.button}
+				className={isSorted ? styles.pressedButton : styles.button}
 				onClick={handleSort}
+				disabled={isLoading}
 			>
 				Сортировать
 			</button>
