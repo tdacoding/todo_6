@@ -1,17 +1,20 @@
 import styles from './Form.module.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { AppContext } from '../AppContext.jsx';
 import PropTypes from 'prop-types';
 
-export const Form = ({
-	request,
-	isLoading,
-	isEditing,
-	editedTodo,
-	setIsEditing,
-	formInputRef,
-}) => {
+export const Form = () => {
+	const {
+		editTodo,
+		newTodo,
+		isLoading,
+		isEditing,
+		editedTodo,
+		setIsEditing,
+		formInputRef,
+	} = useContext(AppContext);
 	const [titleField, setTitleField] = useState('');
-
+	const request = isEditing ? editTodo : newTodo;
 	useEffect(() => {
 		if (isEditing) {
 			setTitleField(editedTodo.title);

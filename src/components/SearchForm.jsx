@@ -1,8 +1,11 @@
 import styles from './SearchForm.module.css';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AppContext } from '../AppContext.jsx';
 import PropTypes from 'prop-types';
 
-export const SearchForm = ({ isLoading, isSorted, setIsSorted, setSearchExpression }) => {
+export const SearchForm = () => {
+	const { isLoading, isSorted, setIsSorted, setSearchExpression } =
+		useContext(AppContext);
 	const [searchField, setSearchField] = useState('');
 
 	const handleSearch = (event) => {

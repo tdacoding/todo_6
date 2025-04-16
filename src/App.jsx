@@ -3,6 +3,7 @@ import Table from './components/Table';
 import { Form } from './components/Form';
 import { SearchForm } from './components/SearchForm';
 import { useEffect, useState, useRef, useCallback } from 'react';
+import { AppContext } from './AppContext.jsx';
 
 export const App = () => {
 	const [todos, setTodos] = useState([]);
@@ -123,55 +124,47 @@ export const App = () => {
 		formInputRef.current.focus();
 	};
 
-	const formProps = isEditing
-		? {
-				request: editTodo,
-				isLoading,
-				isEditing,
-				setIsEditing,
-				editedTodo,
-				formInputRef,
-			}
-		: {
-				request: newTodo,
-				isLoading,
-				isEditing,
-				setIsEditing,
-				editedTodo,
-				formInputRef,
-			};
-
 	useEffect(() => {
 		loadData();
 	}, [loadData]);
 
 	return (
-		<div className={styles.app}>
-			<h1>Список задач</h1>
-			<Form {...formProps} />
-			<SearchForm
-				isSorted={isSorted}
-				setIsSorted={setIsSorted}
-				isLoading={isLoading}
-				setSearchExpression={setSearchExpression}
-			/>
+		<AppContext
+			value={{
+				isLoading,
+				isEditing,
+				editedTodo,
+				formInputRef,
+				isSorted,
+				editTodo,
+				newTodo,
+				setIsEditing,
+				setIsSorted,
+				setSearchExpression,
+			}}
+		>
+			<div className={styles.app}>
+				<h1>Список задач</h1>
+				<Form />
+				<SearchForm />
 
-			{isLoading ? (
-				<div className={styles.loader}></div>
-			) : (
-				<>
-					<div>
-						{Object.keys(todos).length > 0 && (
-							<Table
-								table={table}
-								todos={todos}
-								setEditedTodo={setEditedTodo}
-							/>
-						)}
-					</div>
-					<div className={styles.error}>{error}</div>
-				</>
-			)}
-		</div>
+				{isLoading ? (
+					<div className={styles.loader}></div>
+				) : (
+					<>
+						<div>
+							{Object.keys(todos).length > 0 && (
+								<Table
+									table={table}
+									todos={todos}
+									setEditedTodo={setEditedTodo}
+								/>
+							)}
+						</div>
+						<div className={styles.error}>{error}</div>
+					</>
+				)}
+			</div>
+		</AppContext>
 	);
 };
