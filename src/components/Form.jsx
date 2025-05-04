@@ -7,8 +7,8 @@ import PropTypes from 'prop-types';
 export const Form = ({ formInputRef }) => {
 	const dispatch = useDispatch();
 	const isLoading = useSelector((state) => state.status.isLoading);
-	const editedTodo = useSelector((state) => state.todosReducer.editedTodo);
-	const isEditing = useSelector((state) => state.todosReducer.isEditing);
+	const editedTodo = useSelector((state) => state.editingReducer.editedTodo);
+	const isEditing = useSelector((state) => state.editingReducer.isEditing);
 
 	const [titleField, setTitleField] = useState('');
 	useEffect(() => {

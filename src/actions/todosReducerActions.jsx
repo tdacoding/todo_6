@@ -63,7 +63,7 @@ export const editTodo = (newTitle) => {
 		dispatch({ type: 'SET_IS_LOADING' });
 		try {
 			const response = await fetch(
-				`http://localhost:3000/todos/${getState().todosReducer.editedTodo.id}`,
+				`http://localhost:3000/todos/${getState().editingReducer.editedTodo.id}`,
 				{
 					method: 'PUT',
 					headers: { 'Content-Type': 'application/json;charset=utf-8' },
