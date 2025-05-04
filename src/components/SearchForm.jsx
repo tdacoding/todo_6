@@ -1,26 +1,27 @@
 import styles from './SearchForm.module.css';
-import { useState, useContext } from 'react';
-import { AppContext } from '../AppContext.jsx';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const SearchForm = () => {
-	const { isLoading, isSorted, setIsSorted, setSearchExpression } =
-		useContext(AppContext);
+	const dispatch = useDispatch();
+	const isLoading = useSelector((state) => state.status.isLoading);
+	const isSorted = useSelector((state) => state.filtering.isSorted);
+
 	const [searchField, setSearchField] = useState('');
 
 	const handleSearch = (event) => {
 		event.preventDefault();
-		setSearchExpression(searchField);
+		dispatch({ type: 'SET_SEARCH_EXPRESSION', payload: searchField });
 	};
 	const handleReset = (event) => {
 		event.preventDefault();
 		setSearchField('');
-		setSearchExpression('');
-		setIsSorted(false);
+		dispatch({ type: 'SET_SEARCH_EXPRESSION', payload: '' });
+		dispatch({ type: 'SET_IS_SORTED', payload: false });
 	};
 	const handleSort = (event) => {
 		event.preventDefault();
-		setIsSorted(!isSorted);
+		dispatch({ type: 'SET_IS_SORTED', payload: !isSorted });
 	};
 
 	return (
@@ -49,11 +50,4 @@ export const SearchForm = () => {
 			</button>
 		</form>
 	);
-};
-
-SearchForm.propTypes = {
-	isLoading: PropTypes.bool,
-	isSorted: PropTypes.bool,
-	setSearchExpression: PropTypes.func,
-	setIsSorted: PropTypes.func,
 };

@@ -1,20 +1,16 @@
 import styles from './Form.module.css';
-import { useEffect, useState, useContext } from 'react';
-import { AppContext } from '../AppContext.jsx';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { newTodo, editTodo } from '../actions/todosReducerActions';
 import PropTypes from 'prop-types';
 
-export const Form = () => {
-	const {
-		editTodo,
-		newTodo,
-		isLoading,
-		isEditing,
-		editedTodo,
-		setIsEditing,
-		formInputRef,
-	} = useContext(AppContext);
+export const Form = ({ formInputRef }) => {
+	const dispatch = useDispatch();
+	const isLoading = useSelector((state) => state.status.isLoading);
+	const editedTodo = useSelector((state) => state.todosReducer.editedTodo);
+	const isEditing = useSelector((state) => state.todosReducer.isEditing);
+
 	const [titleField, setTitleField] = useState('');
-	const request = isEditing ? editTodo : newTodo;
 	useEffect(() => {
 		if (isEditing) {
 			setTitleField(editedTodo.title);
@@ -25,14 +21,14 @@ export const Form = () => {
 
 	const sendData = (event) => {
 		event.preventDefault();
-		request(titleField);
+		isEditing ? dispatch(editTodo(titleField)) : dispatch(newTodo(titleField));
 		setTitleField('');
 	};
 
 	const cancel = (event) => {
 		event.preventDefault();
 		setTitleField('');
-		setIsEditing(false);
+		dispatch({ type: 'SET_IS_EDITING', payload: false });
 	};
 
 	return (
@@ -67,10 +63,5 @@ export const Form = () => {
 };
 
 Form.propTypes = {
-	request: PropTypes.func,
-	isLoading: PropTypes.bool,
-	isEditing: PropTypes.bool,
-	editedTodo: PropTypes.object,
-	setIsEditing: PropTypes.func,
 	formInputRef: PropTypes.object,
 };

@@ -1,6 +1,8 @@
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const TableBody = ({ todos, table }) => {
+const TableBody = ({ table }) => {
+	const todos = useSelector((state) => state.todosReducer.todos);
 	const renderContent = (todo, column) => {
 		if (table[column].component) {
 			const component = table[column].component;
@@ -30,5 +32,4 @@ export default TableBody;
 
 TableBody.propTypes = {
 	table: PropTypes.object,
-	todos: PropTypes.array,
 };
