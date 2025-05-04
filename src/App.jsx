@@ -3,7 +3,7 @@ import Table from './components/Table';
 import { Form } from './components/Form';
 import { SearchForm } from './components/SearchForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { loadData, delTodo } from './actions/todosReducerActions';
 
 export const App = () => {
@@ -13,8 +13,6 @@ export const App = () => {
 	const error = useSelector((state) => state.status.error);
 	const isSorted = useSelector((state) => state.filtering.isSorted);
 	const searchExpression = useSelector((state) => state.filtering.searchExpression);
-
-	const formInputRef = useRef(null);
 
 	const table = {
 		title: {
@@ -53,13 +51,13 @@ export const App = () => {
 	const editRegime = (todo) => {
 		dispatch({ type: 'SET_IS_EDITING', payload: true });
 		dispatch({ type: 'SET_EDITED_TODO', payload: todo });
-		formInputRef.current.focus();
+		dispatch({ type: 'SET_INPUT_FOCUS', payload: true });
 	};
 
 	return (
 		<div className={styles.app}>
 			<h1>Список задач</h1>
-			<Form formInputRef={formInputRef} />
+			<Form />
 			<SearchForm />
 
 			{isLoading ? (

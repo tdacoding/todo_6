@@ -1,14 +1,23 @@
 import styles from './Form.module.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { newTodo, editTodo } from '../actions/todosReducerActions';
-import PropTypes from 'prop-types';
 
-export const Form = ({ formInputRef }) => {
+export const Form = () => {
 	const dispatch = useDispatch();
 	const isLoading = useSelector((state) => state.status.isLoading);
 	const editedTodo = useSelector((state) => state.editingReducer.editedTodo);
 	const isEditing = useSelector((state) => state.editingReducer.isEditing);
+	const inputFocus = useSelector((state) => state.editingReducer.inputFocus);
+
+	const formInputRef = useRef(null);
+
+	useEffect(() => {
+		if (inputFocus) {
+			formInputRef.current.focus();
+			dispatch({ type: 'SET_INPUT_FOCUS', payload: false });
+		}
+	}, [inputFocus, dispatch]);
 
 	const [titleField, setTitleField] = useState('');
 	useEffect(() => {
@@ -60,8 +69,4 @@ export const Form = ({ formInputRef }) => {
 			</button>
 		</form>
 	);
-};
-
-Form.propTypes = {
-	formInputRef: PropTypes.object,
 };

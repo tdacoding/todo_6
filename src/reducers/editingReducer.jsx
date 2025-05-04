@@ -1,4 +1,4 @@
-const initState = { isEditing: false, editedTodo: null };
+const initState = { isEditing: false, editedTodo: null, inputFocus: false };
 
 export const editingReducer = (state = initState, action) => {
 	switch (action.type) {
@@ -6,6 +6,8 @@ export const editingReducer = (state = initState, action) => {
 			return { ...state, isEditing: action.payload };
 		case 'SET_EDITED_TODO':
 			return { ...state, editedTodo: action.payload };
+		case 'SET_INPUT_FOCUS':
+			return { ...state, inputFocus: action.payload };
 		default:
 			return state;
 	}
